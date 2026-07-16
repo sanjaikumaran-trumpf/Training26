@@ -4,10 +4,10 @@
          char[] bracketsArray = bracketString.ToCharArray ();
          IList<char> stack = [];
          foreach (char bracket in bracketsArray) {
+            if (bracket == '(' || bracket == '[' || bracket == '{') stack.Add (bracket);
             int lastIndex = stack.Count - 1;
             char lastBracket = stack[lastIndex];
-            if (bracket == '(' || bracket == '[' || bracket == '{') stack.Add (bracket);
-            else if (bracket == ')' && lastBracket == '(') stack.RemoveAt (lastIndex);
+            if (bracket == ')' && lastBracket == '(') stack.RemoveAt (lastIndex);
             else if (bracket == ']' && lastBracket == '[') stack.RemoveAt (lastIndex);
             else if (bracket == '}' && lastBracket == '{') stack.RemoveAt (lastIndex);
          }
