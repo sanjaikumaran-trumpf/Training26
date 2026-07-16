@@ -1,7 +1,10 @@
-﻿namespace training26;
+﻿using Training26;
+
+namespace training26;
 
 class Program {
    static void Main (string[] args) {
-      Console.WriteLine ("Hello, World!");
+      bool result = new BalancedBrackets ().IsBalanced ("{()}");
+      Console.WriteLine (result);
    }
 }
