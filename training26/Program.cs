@@ -4,13 +4,22 @@ namespace training26;
 
 class Program {
    static void Main (string[] args) {
-      int[][] case1 = [[2, 7, 6], [9, 5, 1], [4, 3, 8]], case2 = [[8, 1, 6], [3, 5, 7], [4, 9, 2]], case3 = [[8, 1, 6], [3, 5, 7], [4, 2, 9]];
+      int[][] input = new int[3][];
+      for (int i = 0; i < 3; i++) {
+         string? inputString = null;
+         do {
+            Console.Write ($"Enter the row {i + 1} values in CSV (30, 31, 29): ");
+            inputString = Console.ReadLine ();
+         } while (string.IsNullOrEmpty (inputString));
+         string[] inputChars = inputString.Split (",");
+         int[] inputNumbers = new int[inputChars.Length];
+         for (int j = 0; j < inputChars.Length; j++) {
+            inputNumbers[j] = int.Parse (inputChars[j]);
+         }
+         input[i] = (inputNumbers);
+      }
       MagicSquare magicSquare = new ();
-      bool case1Result = magicSquare.IsMagicSquareMatrix (case1);
-      bool case2Result = magicSquare.IsMagicSquareMatrix (case2);
-      bool case3Result = magicSquare.IsMagicSquareMatrix (case3);
-      Console.WriteLine ($"Case 1: {case1Result}");
-      Console.WriteLine ($"Case 2: {case2Result}");
-      Console.WriteLine ($"Case 3: {case3Result}");
+      bool result = magicSquare.IsMagicSquareMatrix (input);
+      Console.WriteLine ($"Result: {result}");
    }
 }
