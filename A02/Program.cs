@@ -18,18 +18,14 @@ do {
    do {
       Write ("Do you want to play again? (y/n): ");
       playAgain = ReadLine ()?.ToLower ().Trim ();
-      if (playAgain != "y" && playAgain != "n") {
-         PrintMsg ("Invalid input. Please enter 'y' or 'n'", Red);
-      }
+      if (playAgain != "y" && playAgain != "n") PrintMsg ("Invalid input. Please enter 'y' or 'n'", Red);
    } while (playAgain != "y" && playAgain != "n");
 } while (playAgain == "y");
 
 int ReadGuess () {
    while (true) {
       Write ("Guess a number between 1 and 100: ");
-      if (int.TryParse (ReadLine (), out int value) && value >= 1 && value <= 100) {
-         return value;
-      }
+      if (int.TryParse (ReadLine (), out int value) && value >= 1 && value <= 100) return value;
       PrintMsg ("Invalid input. Enter a number between 1 and 100", Red);
    }
 }
