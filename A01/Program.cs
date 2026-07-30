@@ -1,29 +1,28 @@
-﻿int randomNumber = new Random ().Next (1, 101);
+﻿using static System.Console;
+using static System.ConsoleColor;
+
+int randomNumber = new Random ().Next (1, 101);
 
 while (true) {
    int userGuess = ReadInt ();
-   if (userGuess < randomNumber)
-      PrintColoured ("Your guess is too low", ConsoleColor.Cyan);
-   else if (userGuess > randomNumber)
-      PrintColoured ("Your guess is too high", ConsoleColor.Magenta);
+   if (userGuess < randomNumber) PrintColouredMsg ("Your guess is too low", Cyan);
+   else if (userGuess > randomNumber) PrintColouredMsg ("Your guess is too high", Magenta);
    else {
-      PrintColoured ("You guessed correctly", ConsoleColor.Green);
+      PrintColouredMsg ("You guessed correctly", Green);
       break;
    }
 }
 
 int ReadInt () {
    while (true) {
-      Console.Write ("Guess a number: ");
-      if (int.TryParse (Console.ReadLine (), out int value))
-         return value;
-      else
-         PrintColoured ("Enter a proper number!", ConsoleColor.Red);
+      Write ("Guess a whole number between 1 and 100: ");
+      if (int.TryParse (ReadLine (), out int value)) return value;
+      PrintColouredMsg ("Invalid input, Enter a proper number!", Red);
    }
 }
 
-void PrintColoured (string text, ConsoleColor colour) {
-   Console.ForegroundColor = colour;
-   Console.WriteLine (text);
-   Console.ResetColor ();
+void PrintColouredMsg (string text, ConsoleColor colour) {
+   ForegroundColor = colour;
+   WriteLine (text);
+   ResetColor ();
 }
