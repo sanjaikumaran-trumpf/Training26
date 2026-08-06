@@ -10,25 +10,21 @@
 using static System.Console;
 using static System.ConsoleColor;
 
-ConsoleKey playAgain;
-
 do {
    int guess = 0;
    WriteLine ("Think of a number between 1 and 100.\n");
    bool isOdd = AskYesNo ("Is your number odd?");
    if (isOdd) guess |= 1;
-   int remainder4 = AskNumber ("What is the remainder when divided by 4? (0 - 3): ", 0, 3);
+   int remainder4 = AskRemainder ("What is the remainder when divided by 4?", 0, 3);
    guess |= remainder4;
-   int remainder16 = AskNumber ("What is the remainder when divided by 16? (0 - 15): ", 0, 15);
+   int remainder16 = AskRemainder ("What is the remainder when divided by 16?", 0, 15);
    guess |= remainder16;
-   int remainder64 = AskNumber ("What is the remainder when divided by 64? (0 - 63): ", 0, 63);
+   int remainder64 = AskRemainder ("What is the remainder when divided by 64?", 0, 63);
    guess |= remainder64;
    bool greaterOrEqual64 = AskYesNo ("Is your number greater than or equal to 64?");
    if (greaterOrEqual64) guess |= 64;
    PrintMsg ($"Your number is {guess}!\n", Green);
-   WriteLine ("Press 'Y' to play again!\n");
-   playAgain = ReadKey (true).Key;
-} while (playAgain == ConsoleKey.Y);
+} while (AskYesNo ("Do you want to play again?"));
 
 bool AskYesNo (string question) {
    while (true) {
@@ -47,9 +43,9 @@ bool AskYesNo (string question) {
    }
 }
 
-int AskNumber (string question, int min, int max) {
+int AskRemainder (string question, int min, int max) {
    while (true) {
-      Write (question);
+      Write ($"{question} ({min} - {max}): ");
       if (int.TryParse (ReadLine (), out int value) && value >= min && value <= max) return value;
       PrintMsg ($"Please enter a number between {min} and {max}.", Red);
    }
