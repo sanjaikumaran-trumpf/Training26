@@ -1,26 +1,28 @@
-﻿using static System.Console;
+﻿// ------------------------------------------------------------------------------------------------
+// Training 2026
+// Copyright (c) Metamation India.
+// ------------------------------------------------------------------------------------------------
+// Program.cs
+// Guessing Game
+// A console-based game where the player tries to guess a randomly generated number within a given range.
+// ------------------------------------------------------------------------------------------------
+using static System.Console;
 using static System.ConsoleColor;
 
-string? playAgain;
+ConsoleKey playAgain;
 
 do {
-   int secretNumber = new Random ().Next (1, 101);
-   int userGuess;
+   int secretNumber = Random.Shared.Next (1, 101), userGuess;
    do {
       userGuess = ReadGuess ();
-      if (userGuess == secretNumber) PrintMsg ("You guessed correctly!", Green);
-      else {
-         bool isTooLow = userGuess < secretNumber;
-         string message = isTooLow ? "Your guess is low" : "Your guess is high";
-         PrintMsg (message, isTooLow ? Cyan : Magenta);
-      }
+      var (msg, clr) = userGuess < secretNumber ? ("Your guess is low", Cyan) :
+                       userGuess > secretNumber ? ("Your guess is high", Red) :
+                                                  ("You guessed correctly!", Green);
+      PrintMsg (msg, clr);
    } while (userGuess != secretNumber);
-   do {
-      Write ("Do you want to play again? (y/n): ");
-      playAgain = ReadLine ()?.ToLower ().Trim ();
-      if (playAgain != "y" && playAgain != "n") PrintMsg ("Invalid input. Please enter 'y' or 'n'", Red);
-   } while (playAgain != "y" && playAgain != "n");
-} while (playAgain == "y");
+   WriteLine ("Press 'Y' to play again!");
+   playAgain = ReadKey (true).Key;
+} while (playAgain == ConsoleKey.Y);
 
 int ReadGuess () {
    while (true) {
