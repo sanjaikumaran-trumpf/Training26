@@ -10,8 +10,6 @@
 using static System.Console;
 using static System.ConsoleColor;
 
-ConsoleKey playAgain;
-
 do {
    int guess = 0;
    WriteLine ("Think of a number between 1 and 100.\n");
@@ -21,9 +19,7 @@ do {
       if (AskYesNo ($"Is your number greater than or equal to {currentNumber}?")) guess = currentNumber;
    }
    PrintMsg ($"Your number is {guess}!\n", Green);
-   WriteLine ("Press 'Y' to play again!\n");
-   playAgain = ReadKey (true).Key;
-} while (playAgain == ConsoleKey.Y);
+} while (AskYesNo ("Do you want to play again?"));
 
 bool AskYesNo (string question) {
    while (true) {
