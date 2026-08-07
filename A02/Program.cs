@@ -4,12 +4,10 @@
 // ------------------------------------------------------------------------------------------------
 // Program.cs
 // Guessing Game
-// A console-based game where the player tries to guess a randomly generated number within a given range.
+// The player tries to guess a randomly generated number within a given range.
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 using static System.ConsoleColor;
-
-ConsoleKey playAgain;
 
 do {
    int secretNumber = Random.Shared.Next (1, 101), userGuess;
@@ -21,14 +19,13 @@ do {
       PrintMsg (msg, clr);
    } while (userGuess != secretNumber);
    WriteLine ("Press 'Y' to play again!");
-   playAgain = ReadKey (true).Key;
-} while (playAgain == ConsoleKey.Y);
+} while (ReadKey (true).Key == ConsoleKey.Y);
 
 int ReadGuess () {
    while (true) {
       Write ("Guess a number between 1 and 100: ");
       if (int.TryParse (ReadLine (), out int value) && value >= 1 && value <= 100) return value;
-      PrintMsg ("Invalid input. Enter a number between 1 and 100", Red);
+      PrintMsg ("Invalid input!", Red);
    }
 }
 
