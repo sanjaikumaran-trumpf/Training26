@@ -12,22 +12,27 @@ using static System.ConsoleColor;
 
 do {
    int guess = 0;
-   WriteLine ("Think of a number between 1 and 127.\n");
-   for (int bit = 6; bit >= 0; bit--) {
-      int currentNumber = guess | (1 << bit);
-      if (AskYesNo ($"Is your number greater than or equal to {currentNumber}?")) guess = currentNumber;
-   }
-   var (msg, color) = guess < 1 ? ("Those answers don't match a number between 1 and 127.", Red) : ($"Your number is {guess}!\n", Green);
-   PrintMsg (msg, color);
+   WriteLine ("Think of a number between 0 and 127.\n");
+   for (int bit = 6; bit >= 0; bit--)
+      if (AskYesNo ($"Is your number greater than or equal to {guess | (1 << bit)}?")) guess = guess | (1 << bit); // Add the current bit to guess using bitwise OR
+   PrintMsg ($"Your number is {guess}!\n", Green);
 } while (AskYesNo ("Do you want to play again?"));
 
+// Ask the user a Yes/No question and keep prompting until Y or N is entered.
 bool AskYesNo (string question) {
    while (true) {
       Write ($"{question} (Y/N): ");
-      var result = ReadKey (true).Key switch { ConsoleKey.Y => true, ConsoleKey.N => false, _ => (bool?)null };
-      var (msg, color) = result.HasValue ? (result.Value ? ("Y", Blue) : ("N", Magenta)) : ("Invalid input", Red);
-      PrintMsg (msg, color);
-      if (result.HasValue) return result.Value;
+      switch (ReadKey (true).Key) {
+         case ConsoleKey.Y:
+            PrintMsg ("Y", Blue);
+            return true;
+         case ConsoleKey.N:
+            PrintMsg ("N", Magenta);
+            return false;
+         default:
+            PrintMsg ("Please enter Y or N.", Red);
+            break;
+      }
    }
 }
 
