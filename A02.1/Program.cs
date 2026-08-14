@@ -14,7 +14,9 @@ do {
    int guess = 0;
    WriteLine ("Think of a number between 0 and 127.\n");
    for (int bit = 6; bit >= 0; bit--)
-      if (AskYesNo ($"Is your number greater than or equal to {guess | (1 << bit)}?")) guess = guess | (1 << bit); // Add the current bit to guess using bitwise OR
+      if (AskYesNo ($"Is your number greater than or equal to {guess | (1 << bit)}?"))
+         // Add the current bit to guess using bitwise OR
+         guess |= 1 << bit;
    PrintMsg ($"Your number is {guess}!\n", Green);
 } while (AskYesNo ("Do you want to play again?"));
 
