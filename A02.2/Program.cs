@@ -15,8 +15,8 @@ do {
    // Determine each binary bit using the remainder
    for (int divisor = 2; divisor <= 128; divisor *= 2) {
       int bit = divisor / 2;
-      // Upper half means this bit is 1, else bit is 0
-      if (AskYesNo ($"Is the remainder when divided by {divisor} greater than or equal to {bit}?"))
+      // True means this bit is 1, else bit is 0
+      if (AskYesNo ($"Is the remainder when divided by {divisor} equal to {guess | bit}?"))
          guess |= bit;
    }
    PrintMsg ($"Your number is {guess}!\n", Green);
