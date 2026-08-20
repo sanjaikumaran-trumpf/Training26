@@ -7,6 +7,7 @@
 // A program that finds possible words using the provided letters from spelling bee game
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
+using static System.ConsoleColor;
 
 string[] wordsList = File.ReadAllLines ("./word_list.txt");
 char[] letters = GetLetters ();
@@ -18,12 +19,12 @@ foreach (string word in wordsList)
       wordPoints[word] = IsSpecialWord (letters, word) ? (points + 7, true) : (points, false);
    }
 // Sort words by points from highest to lowest
-wordPoints = wordPoints.OrderByDescending (x => x.Value).ToDictionary ();
+wordPoints = wordPoints.OrderByDescending (x => x.Value).ThenBy (x => x.Key).ToDictionary ();
 int totalPoints = 0;
 // Calculate total points and print the words with points and special word indicator
 foreach (var item in wordPoints) {
    totalPoints += item.Value.Points;
-   PrintMsg ($"{item.Value.Points,-2} {item.Key}", item.Value.Special ? ConsoleColor.Green : ConsoleColor.White);
+   PrintMsg ($"{item.Value.Points,2}. {item.Key}", item.Value.Special ? Green : White);
 }
 WriteLine ($"-------------\nTotal Points: {totalPoints}");
 
