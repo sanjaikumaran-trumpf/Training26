@@ -20,7 +20,7 @@ foreach (string word in wordsList)
       wordPoints.Add ((word, isPangram ? points + 7 : points, isPangram));
    }
 // Sort words by points from highest to lowest and words alphabetically for same points
-wordPoints = wordPoints.OrderByDescending (x => x.Points).ThenBy (x => x.Word).ToList ();
+wordPoints = [.. wordPoints.OrderByDescending (x => x.Points)];
 int totalPoints = 0;
 // Calculate total points and print the words with points and special word indicator
 foreach (var item in wordPoints) {
@@ -35,9 +35,9 @@ WriteLine ($"-------------\nTotal Points: {totalPoints}");
 string GetLetters () {
    while (true) {
       Write ("Enter the list of 7 letters (comma separated): ");
-      string[] parts = (ReadLine () ?? "").Split (',').Select (s => s.Trim ()).ToArray (); ;
+      IEnumerable<string> parts = (ReadLine () ?? "").Split (',').Select (s => s.Trim ());
       // Validate that exactly 7 single alphabetic letters were entered.
-      string msg = parts.Length != 7 && parts.Distinct ().Count () == 7
+      string msg = parts.Distinct ().Count () != 7
                      ? "Error: You must enter exactly 7 distinct letters."
                      : parts.Any (s => s.Length != 1 || !char.IsLetter (s[0]))
                      ? "Error: Each item must be a single alphabet letter." : "";
@@ -50,8 +50,7 @@ string GetLetters () {
 }
 
 // Return true if word has min 4 letters, contain first letter and use letters from the given list
-bool IsValidWord (string seed, string word) => word.Length >= 4 && word.Contains (seed[0])
-                                                && word.All (seed.Contains);
+bool IsValidWord (string seed, string word) => word.Length >= 4 && word.Contains (seed[0]) && word.All (seed.Contains);
 
 // Return true if word contains all 7 of the given letters
 bool IsPangram (string seed, string word) => word.Length >= 7 && word.Distinct ().Count () == 7;
