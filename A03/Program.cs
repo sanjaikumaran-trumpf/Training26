@@ -10,13 +10,13 @@ using static System.Console;
 using static System.ConsoleColor;
 
 string[] wordsList = File.ReadAllLines ("./word_list.txt");
-char[] letters = GetLetters ();
-Dictionary<string, (int Points, bool Special)> wordPoints = [];
+char[] seed = GetLetters ();
+Dictionary<string, (int Points, bool isPanagram)> wordPoints = [];
 foreach (string word in wordsList)
-   if (IsValidWord (letters, word)) {
+   if (IsValidWord (seed, word)) {
       int points = word.Length > 4 ? word.Length : 1;
-      // Add 7 bonus points for a special word
-      wordPoints[word] = IsSpecialWord (letters, word) ? (points + 7, true) : (points, false);
+      // Add 7 bonus points for a panagram word
+      wordPoints[word] = IsPanagram (seed, word) ? (points + 7, true) : (points, false);
    }
 // Sort words by points from highest to lowest
 wordPoints = wordPoints.OrderByDescending (x => x.Value).ThenBy (x => x.Key).ToDictionary ();
@@ -24,7 +24,7 @@ int totalPoints = 0;
 // Calculate total points and print the words with points and special word indicator
 foreach (var item in wordPoints) {
    totalPoints += item.Value.Points;
-   PrintMsg ($"{item.Value.Points,2}. {item.Key}", item.Value.Special ? Green : White);
+   PrintMsg ($"{item.Value.Points,2}. {item.Key}", item.Value.isPanagram ? Green : White);
 }
 WriteLine ($"-------------\nTotal Points: {totalPoints}");
 
@@ -46,12 +46,12 @@ char[] GetLetters () {
 }
 
 // Return true if word has min 4 letters, contain first letter and use letters from the given list
-bool IsValidWord (char[] letters, string word) => word.Length >= 4 && word.Contains (letters[0]) &&
-                                                   word.All (c => letters.Contains (c));
+bool IsValidWord (char[] seed, string word) => word.Length >= 4 && word.Contains (seed[0]) &&
+                                                   word.All (c => seed.Contains (c));
 
 // Return true if word contains all 7 of the given letters
-bool IsSpecialWord (char[] letters, string word) => word.Length >= 7 &&
-                                                    letters.All (c => word.Contains (c));
+bool IsPanagram (char[] seed, string word) => word.Length >= 7 &&
+                                                    seed.All (c => word.Contains (c));
 
 // Print a message in the specified colour
 void PrintMsg (string msg, ConsoleColor colour) {
