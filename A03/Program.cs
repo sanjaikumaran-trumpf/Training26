@@ -11,20 +11,21 @@ using static System.ConsoleColor;
 
 string[] wordsList = File.ReadAllLines ("./word_list.txt");
 char[] seed = GetLetters ();
-Dictionary<string, (int Points, bool isPanagram)> wordPoints = [];
+var wordPoints = new List<(string Word, int Points, bool IsPanagram)> ();
 foreach (string word in wordsList)
    if (IsValidWord (seed, word)) {
       int points = word.Length > 4 ? word.Length : 1;
+      bool isPanagram = IsPanagram (seed, word);
       // Add 7 bonus points for a panagram word
-      wordPoints[word] = IsPanagram (seed, word) ? (points + 7, true) : (points, false);
+      wordPoints.Add ((word, isPanagram ? points + 7 : points, isPanagram));
    }
-// Sort words by points from highest to lowest
-wordPoints = wordPoints.OrderByDescending (x => x.Value).ThenBy (x => x.Key).ToDictionary ();
+// Sort words by points from highest to lowest and words alphabetically for same points
+wordPoints = wordPoints.OrderByDescending (x => x.Points).ThenBy (x => x.Word).ToList ();
 int totalPoints = 0;
 // Calculate total points and print the words with points and special word indicator
 foreach (var item in wordPoints) {
-   totalPoints += item.Value.Points;
-   PrintMsg ($"{item.Value.Points,2}. {item.Key}", item.Value.isPanagram ? Green : White);
+   totalPoints += item.Points;
+   PrintMsg ($"{item.Points,2}. {item.Word}", item.IsPanagram ? Green : White);
 }
 WriteLine ($"-------------\nTotal Points: {totalPoints}");
 
