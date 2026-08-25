@@ -35,7 +35,7 @@ WriteLine ($"-------------\nTotal Points: {totalPoints}");
 string GetLetters () {
    while (true) {
       Write ("Enter the list of 7 letters (comma separated): ");
-      IEnumerable<string> parts = (ReadLine () ?? "").Split (',').Select (s => s.Trim ());
+      IEnumerable<string> parts = (ReadLine () ?? "").Split (',').Select (s => s.Trim ().ToLower ());
       // Validate that exactly 7 single alphabetic letters were entered.
       string msg = parts.Distinct ().Count () != 7
                      ? "Error: You must enter exactly 7 distinct letters."
