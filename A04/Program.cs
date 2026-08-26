@@ -3,13 +3,15 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------------------------------------
 // Program.cs
-// Spelling Bee Seeds
-// A program that prints the first 7 high frequency letters in the word list
+// Seed Letter Frequency
+// Program prints the seven most frequency letters in the word list.
 // ------------------------------------------------------------------------------------------------
 
-Dictionary<char, int> frequency = [];
-foreach (char letter in File.ReadAllText ("./word_list.txt"))
-   if (letter is > 'a' and < 'z')
-      frequency[letter] = frequency.GetValueOrDefault (letter) + 1;
-var sortedLetters = frequency.OrderByDescending (x => x.Value).ThenBy (x => x.Key).Take (7);
-foreach (var item in sortedLetters) Console.WriteLine ($"{item.Key,2} {item.Value}");
+Dictionary<char, int> letterFrequency = [];
+foreach (char ch in File.ReadAllText ("./word_list.txt").ToLowerInvariant ())
+   // Counting the letter frequency
+   if (ch is >= 'a' and <= 'z')
+      letterFrequency[ch] = letterFrequency.GetValueOrDefault (ch) + 1;
+// Printing the seven most frequency letters
+foreach (var item in letterFrequency.OrderByDescending (x => x.Value).ThenBy (x => x.Key).Take (7))
+   Console.WriteLine ($"{item.Key,2} {item.Value}");
