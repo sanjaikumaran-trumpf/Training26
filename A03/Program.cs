@@ -3,8 +3,8 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------------------------------------
 // Program.cs
-// Spelling Bee words solution finder
-// A program that finds possible words using the provided letters from spelling bee game
+// A03: Spelling Bee words solution finder
+// A program that finds possible words from the letters provided in the Spelling Bee game.
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 using static System.ConsoleColor;

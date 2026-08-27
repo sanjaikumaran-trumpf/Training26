@@ -3,12 +3,12 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------------------------------------
 // Program.cs
-// Seed Letter Frequency
-// Program prints the seven most frequency letters in the word list.
+// A04: Seed Letter Frequency
+// Program prints the seven most frequent letters in the word list
 // ------------------------------------------------------------------------------------------------
 
 Dictionary<char, int> letterFrequency = [];
-foreach (char ch in File.ReadAllText ("./word_list.txt").ToLowerInvariant ())
+foreach (char ch in File.ReadAllText ("./word_list.txt").ToLower ())
    // Counting the letter frequency
    if (ch is >= 'a' and <= 'z')
       letterFrequency[ch] = letterFrequency.GetValueOrDefault (ch) + 1;
