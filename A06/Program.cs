@@ -53,7 +53,7 @@ bool Solve (int[] queens, int row) {
    return false;
 }
 
-int[] queens = new int[5];
+int[] queens = new int[8];
 Array.Fill (queens, -1);
 Solve (queens, 0);
 PrintBoard (queens);
