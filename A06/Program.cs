@@ -10,7 +10,7 @@ using static System.Console;
 
 // Prints chess board and queens in the given places
 void PrintBoard (int[] queens) {
-   //OutputEncoding = System.Text.Encoding.UTF8;
+   OutputEncoding = System.Text.Encoding.UTF8;
    for (int i = 0; i < queens.Length; i++) {
       // Top / middle border
       Write (i == 0 ? "\u250C" : "\u251C");
@@ -41,19 +41,26 @@ bool IsSafe (int[] queens, int row, int column) {
 
 // Try to place a queen in the current row
 // Recursively solve the remaining rows and backtrack if needed
-bool Solve (int[] queens, int row) {
-   if (row == queens.Length) return true;
+void Solve (int[] queens, int row, List<int[]> solutions) {
+   if (row == queens.Length) {
+      solutions.Add ((int[])queens.Clone ());
+      return;
+   }
    for (int column = 0; column < queens.Length; column++) {
       if (IsSafe (queens, row, column)) {
          queens[row] = column;
-         if (Solve (queens, row + 1)) return true;
+         Solve (queens, row + 1, solutions);
          queens[row] = -1;
       }
    }
-   return false;
 }
 
+List<int[]> slns = [];
 int[] queens = new int[8];
 Array.Fill (queens, -1);
-Solve (queens, 0);
-PrintBoard (queens);
+Solve (queens, 0, slns);
+for (int i = 0; i < slns.Count; i++) {
+   WriteLine ($"Solution {i + 1} of {slns.Count}");
+   PrintBoard (slns[i]);
+   WriteLine ();
+}
