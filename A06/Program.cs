@@ -8,13 +8,15 @@
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 
+Write ("Press Y to print only unique solutions or any key to print all: ");
+bool printUniqueOnly = ReadKey ().Key == ConsoleKey.Y;
 int noOfQueens = 8;
 List<int[]> slns = [];
 int[] queens = new int[noOfQueens];
 Array.Fill (queens, -1);
 Solve (queens, 0, slns);
 for (int i = 0; i < slns.Count; i++) {
-   WriteLine ($"Solution {i + 1} of {slns.Count}");
+   WriteLine ($"\nSolution {i + 1} of {slns.Count}");
    PrintBoard (slns[i]);
    WriteLine ();
 }
@@ -45,7 +47,7 @@ void PrintBoard (int[] queens) {
 void Solve (int[] queens, int row, List<int[]> solutions) {
    if (row == noOfQueens) {
       var solution = (int[])queens.Clone ();
-      if (IsUnique (solution))
+      if (!printUniqueOnly || IsUnique (solution))
          solutions.Add (solution);
       return;
    }
