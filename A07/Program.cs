@@ -50,12 +50,12 @@ double ParseDouble (string input) {
    if (!hasDigit) throw new ArgumentException (InvalidDoubleMessage);
    // Handle exponent notation
    int exponentSign = 1;
-   if (pos < input.Length && (input[pos] == '+' || input[pos] == '-')) {
-      if (input[pos] == '-') exponentSign = -1;
-      pos++;
-   }
    if (pos < input.Length && (input[pos] == 'e' || input[pos] == 'E')) {
       pos++;
+      if (pos < input.Length && (input[pos] == '+' || input[pos] == '-')) {
+         if (input[pos] == '-') exponentSign = -1;
+         pos++;
+      }
       if (!(pos < input.Length) || !IsDigit (input[pos]))
          throw new ArgumentException (InvalidDoubleMessage);
       int exponent = 0;
