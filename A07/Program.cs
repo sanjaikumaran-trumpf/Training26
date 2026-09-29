@@ -6,69 +6,59 @@
 // Parse Double
 // Parse the double from the string
 // ------------------------------------------------------------------------------------------------
-const string InvalidDoubleMessage = "Invalid double number";
-while (true) {
-   Console.Write ("Enter the input string: ");
-   string inputString = Console.ReadLine ()?.Trim () ?? "";
-   try {
-      Console.WriteLine ($"ParseDouble : {ParseDouble (inputString)}");
-   } catch (Exception e) {
-      Console.WriteLine ($"ParseDouble Error: {e.Message}");
-   }
-   Console.WriteLine ("\nPress any key to continue or Escape to exit.");
-   if (Console.ReadKey (true).Key == ConsoleKey.Escape) break;
-   Console.WriteLine ();
+using static System.Console;
+
+string?[] inputs = ["12", "12.123", "12.03", ".02", "0.02", "0", "-12", "-12.12", "+12",
+   "+12.12", "12.", "-.02", "+.02", "1e3", "1E3", "1.2e3", "1.2E+3", "1.2E-3", " 12", "12 ",
+   " 12 ", "  12.12  ", "  12. 12  ", "", " ", "abc", "hello", "12abc", "abc12", "12.12.12",
+   "..12", "12..12", ".", "-", "+", "--12", "++12", "12-", "12+", "1,2,3", "12 34", "1 2",
+   "12a.3", "1e", "1e+", "1e-", "1e2.3", null, "nan"];
+WriteLine ($"{"Input",-12}\t{"double.TryParse",-16}\t{"ParseDouble",-12}");
+foreach (var str in inputs) {
+   bool status = double.TryParse (str, out double result);
+   WriteLine ($"{$"'{str}'",-12}\t{(status ? result : double.NaN),-16}\t{ParseDouble (str),-12}");
 }
 
-double ParseDouble (string input) {
-   if (string.IsNullOrEmpty (input)) throw new ArgumentException (InvalidDoubleMessage);
-   int pos = 0;
-   int sign = 1;
-   if (input[pos] == '+' || input[pos] == '-') {
-      if (input[pos] == '-') sign = -1;
-      pos++;
-   }
+double ParseDouble (string? str) {
+   str = str?.Trim ().Replace (",", "");
+   if (string.IsNullOrEmpty (str)) return double.NaN;
+   int pos = 0, sign = 1, strLen = str.Length;
+   if (str[pos] == '+' || str[pos] == '-') if (str[pos++] == '-') sign = -1;
    double value = 0;
    bool hasDigit = false;
    // Parse digits before decimal point
-   while (pos < input.Length && IsDigit (input[pos])) {
-      value = value * 10 + input[pos] - '0';
+   while (pos < strLen && IsDigit (str[pos])) {
+      value = value * 10 + str[pos++] - '0';
       hasDigit = true;
-      pos++;
    }
    // Parse digits after decimal point
-   if (pos < input.Length && input[pos] == '.') {
+   if (pos < strLen && str[pos] == '.') {
       pos++;
       double divisor = 10;
-      while (pos < input.Length && IsDigit (input[pos])) {
-         value += (input[pos] - '0') / divisor;
+      while (pos < strLen && IsDigit (str[pos])) {
+         value += (str[pos++] - '0') / divisor;
          divisor *= 10;
          hasDigit = true;
-         pos++;
       }
    }
-   if (!hasDigit) throw new ArgumentException (InvalidDoubleMessage);
+   if (!hasDigit) return double.NaN;
    // Handle exponent notation
    int exponentSign = 1;
-   if (pos < input.Length && (input[pos] == 'e' || input[pos] == 'E')) {
+   if (pos < strLen && (str[pos] == 'e' || str[pos] == 'E')) {
       pos++;
-      if (pos < input.Length && (input[pos] == '+' || input[pos] == '-')) {
-         if (input[pos] == '-') exponentSign = -1;
-         pos++;
-      }
-      if (!(pos < input.Length) || !IsDigit (input[pos]))
-         throw new ArgumentException (InvalidDoubleMessage);
+      if (pos < strLen && (str[pos] == '+' || str[pos] == '-'))
+         if (str[pos++] == '-') exponentSign = -1;
+      if (!(pos < strLen) || !IsDigit (str[pos])) return double.NaN;
       int exponent = 0;
-      while (pos < input.Length) {
-         if (!IsDigit (input[pos])) throw new ArgumentException (InvalidDoubleMessage);
-         exponent = exponent * 10 + input[pos] - '0';
-         pos++;
+      while (pos < strLen) {
+         if (!IsDigit (str[pos])) return double.NaN;
+         exponent = exponent * 10 + str[pos++] - '0';
       }
       value *= Math.Pow (10, exponent * exponentSign);
    }
    // Any remaining character makes the input invalid.
-   if (pos != input.Length) throw new ArgumentException (InvalidDoubleMessage);
+   if (pos != strLen) return double.NaN;
    return value * sign;
-}
 
-bool IsDigit (char value) => value >= '0' && value <= '9';
+   bool IsDigit (char value) => value is >= '0' and <= '9';
+}
