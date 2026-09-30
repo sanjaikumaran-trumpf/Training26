@@ -50,13 +50,11 @@ double ParseDouble (string? str) {
          if (str[pos++] == '-') exponentSign = -1;
       if (!(pos < strLen) || !IsDigit (str[pos])) return double.NaN;
       int exponent = 0;
-      while (pos < strLen) {
-         if (!IsDigit (str[pos])) return double.NaN;
+      while (pos < strLen && IsDigit (str[pos]))
          exponent = exponent * 10 + str[pos++] - '0';
-      }
       value *= Math.Pow (10, exponent * exponentSign);
    }
-   // Any remaining character makes the input invalid.
+   // Any remaining character makes the input invalid
    if (pos != strLen) return double.NaN;
    return value * sign;
 
