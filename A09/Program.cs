@@ -80,7 +80,7 @@ class TQueue<T> {
    }
    #endregion
 
-   #region Properties
+   #region Properties -----------------------------------------------
    public bool IsEmpty => mCount == 0;
    public int Size => mCount;
    #endregion
